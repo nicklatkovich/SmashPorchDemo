@@ -11,14 +11,14 @@ namespace LiftDemo {
         private static MainThread _mainThread;
 
         private static Dictionary<string, int> _commands = new Dictionary<string, int>( ) {
-            { "первый этаж", 1 },
-            { "второй этаж", 2 },
-            { "третий этаж", 3 },
-            { "четвёртый этаж", 4 },
-            { "пятый этаж", 5 },
-            { "шестой этаж", 6 },
-            { "седьмой этаж", 7 },
-            { "восьмой этаж", 8 },
+            { "первый этаж", 0 },
+            { "второй этаж", 1 },
+            { "третий этаж", 2 },
+            { "четвёртый этаж", 3 },
+            { "пятый этаж", 4 },
+            { "шестой этаж", 5 },
+            { "седьмой этаж", 6 },
+            { "восьмой этаж", 7 },
         };
 
         [STAThread]
@@ -45,7 +45,8 @@ namespace LiftDemo {
         }
 
         private static void OnSpeechRecognized(object sender, SpeechRecognizedEventArgs e) {
-            _mainThread.CurrentLiftFloor = (uint)_commands[e.Result.Text];
+            _mainThread.FloorsButtons[(uint)_commands[e.Result.Text]] = true;
+            //CurrentLiftFloor = (uint)_commands[e.Result.Text];
         }
 
         public static Point GetSize(this Texture2D texture) {

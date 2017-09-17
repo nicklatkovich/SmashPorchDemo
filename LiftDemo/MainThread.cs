@@ -9,7 +9,7 @@ namespace LiftDemo {
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private uint _currentFloor = 1u;
+        private uint _currentLiftFloor = 1u;
         private float _currentLiftPosition = 1f;
         private float _liftScale;
 
@@ -67,6 +67,13 @@ namespace LiftDemo {
             _spriteBatch.End( );
             // TODO: Drawing
             base.Draw(time);
+        }
+
+        public uint CurrentLiftFloor {
+            set {
+                _currentLiftPosition = _currentLiftFloor = value;
+            }
+            get => _currentLiftFloor;
         }
     }
 }

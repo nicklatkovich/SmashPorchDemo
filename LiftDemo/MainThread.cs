@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace LiftDemo {
     public class MainThread : Game {
@@ -12,8 +13,12 @@ namespace LiftDemo {
         private uint _currentLiftFloor = 1u;
         private float _currentLiftPosition = 1f;
         private float _liftScale;
+        public bool[ ] _floorsButtons = new bool[FLOORS_NUMBER];
 
         public Texture2D TextureLift { get; protected set; }
+        public Texture2D TextureButton { get; protected set; }
+
+        public SpriteFont FontArial64 { get; protected set; }
 
         public MainThread( ) {
             _graphics = new GraphicsDeviceManager(this) {
@@ -32,6 +37,8 @@ namespace LiftDemo {
         protected override void LoadContent( ) {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             TextureLift = Content.Load<Texture2D>("sLift");
+            TextureButton = Content.Load<Texture2D>("sGrayButton");
+            FontArial64 = Content.Load<SpriteFont>("fArial64");
             _liftScale = (float)_graphics.PreferredBackBufferHeight / FLOORS_NUMBER / TextureLift.Height;
         }
 
@@ -64,6 +71,27 @@ namespace LiftDemo {
                 origin: new Vector2(TextureLift.Width / 2f, TextureLift.Height / 2f),
                 scale: new Vector2(_liftScale, _liftScale));
 #pragma warning restore CS0618 // Type or member is obsolete
+            uint panelHorizontalNumberButtons = (uint)Math.Sqrt(FLOORS_NUMBER);
+            uint panelVerticalNumberButtons = (uint)Math.Ceiling((float)FLOORS_NUMBER / panelHorizontalNumberButtons);
+            uint panelWidth = (uint)TextureButton.Width * panelHorizontalNumberButtons;
+            uint panelHeight = panelVerticalNumberButtons * (uint)TextureButton.Height;
+            float buttonsScale = Math.Min(
+                386f / panelHorizontalNumberButtons / TextureButton.Width,
+                386f / panelVerticalNumberButtons / TextureButton.Height);
+            for (uint i = 0; i < FLOORS_NUMBER; i++) {
+                Vector2 pos = buttonsScale * new Vector2(
+                        TextureButton.Width * (i % panelHorizontalNumberButtons),
+                        TextureButton.Height * (i / panelHorizontalNumberButtons));
+#pragma warning disable CS0618 // Type or member is obsolete
+                _spriteBatch.Draw(TextureButton,
+                    position: pos,
+                    scale: new Vector2(buttonsScale));
+#pragma warning restore CS0618 // Type or member is obsolete
+                Utils.Utils.DrawText(_spriteBatch, FontArial64, (FLOORS_NUMBER - i).ToString( ),
+                    pos + new Vector2(buttonsScale / 2f) * TextureButton.GetSize( ).ToVector2( ),
+                    new Vector2(buttonsScale * 0.5f) * TextureButton.GetSize( ).ToVector2( ), Color.Black, 0f);
+                //_spriteBatch.DrawString(FontArial64, , pos + new Vector2(buttonsScale / 2f), Color.DarkGray);
+            }
             _spriteBatch.End( );
             // TODO: Drawing
             base.Draw(time);

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Speech.Recognition;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -44,6 +46,10 @@ namespace LiftDemo {
 
         private static void OnSpeechRecognized(object sender, SpeechRecognizedEventArgs e) {
             _mainThread.CurrentLiftFloor = (uint)_commands[e.Result.Text];
+        }
+
+        public static Point GetSize(this Texture2D texture) {
+            return new Point(texture.Width, texture.Height);
         }
     }
 #endif

@@ -62,8 +62,9 @@ namespace SmartPorchDemo {
         }
 
         protected override void Update(GameTime time) {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState( ).IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState( ).IsKeyDown(Keys.Escape)) {
                 Exit( );
+            }
             // TODO: Update logic
             base.Update(time);
         }
